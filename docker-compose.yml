@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+  oauth2_proxy:
+    image: bitnami/oauth2-proxy:4.0.0-ol-7-r71
+    entrypoint: oauth2_proxy
+    command:
+      - "--http-address=0.0.0.0:4180"
+      - "--upstream=http://mailhog:8025/"
+      - "--config=/run/secrets/oauth2_proxy_config"
+    ports:
+      - "4180:4180"
+    env_file: dotenv/docker.env
+    depends_on:
+      - mailhog
+    secrets:
+      - oauth2_proxy_config
+      - oauth2_proxy_mail
+  mailhog:
+    image: "mailhog/mailhog"
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+secrets:
+  oauth2_proxy_config:
+    file: ./secrets/oauth2_proxy.conf
+  oauth2_proxy_mail:
+    file: ./secrets/mail.txt

@@ -1,0 +1,1 @@
+-CREATE-SECRETS: cd secrets && for fname in `ls *.example`; do if [ ! -e $fname ]; then cp $fname `basename $fname .example`; fi done

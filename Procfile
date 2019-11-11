@@ -7,8 +7,8 @@
 -setup-repo-update: helm repo update
 
 # for helm
--helm-apply-oauth2-proxy: helm upgrade symdon --install -f helm/oauth2-proxy.config.yml stable/oauth2-proxy
--helm-apply-mailhog: helm upgrade symdon --install stable/mailhog
+-helm-apply-oauth2-proxy: helm upgrade symdon --install -f helm/oauth2-proxy.config.yml -f secrets/helm.yml stable/oauth2-proxy 
+-helm-apply-mailhog: helm upgrade symdon-mailhog --install stable/mailhog
 
 # for k8s
 -k8s-apply: kubectl apply -f k8s/main.yml

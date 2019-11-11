@@ -1,19 +1,12 @@
-authenticatedEmailsFile:
-  enabled: true
-  restricted_access: "test1@example.com"
-
-config:
-  clientID: "000000000000-0a0aa0a00a0a0a0a00aaaa0a0a0a0a0a.apps.googleusercontent.com"
-  clientSecret: "a0a000a000a00a0a00a0a0a0"
-  cookieSecret: "secret"
-  configFile: null
+service:
+  port: 4180
 
 extraArgs:
-  "upstream": "http://solemn-badger-mailhog.default.svc.cluster.local:8025/"
+  "upstream": "http://symdon-mailhog.default.svc.cluster.local:8025/"
 
 extraEnv:
   - name: "OAUTH2_PROXY_UPSTREAM"
-    value: "http://solemn-badger-mailhog.default.svc.cluster.local:8025"
+    value: "http://symdon-mailhog.default.svc.cluster.local:8025"
 
   - name: "OAUTH2_PROXY_REDIRECT_URL"
     value: "http://127.0.0.1/oauth2/callback"

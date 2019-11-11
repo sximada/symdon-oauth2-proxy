@@ -1,20 +1,60 @@
 apiVersion: v1
 kind: Service
 metadata:
+  name: symdon-oauth2-proxy
   labels:
     app: oauth2-proxy
-  name: sad-sheep-oauth2-proxy
 spec:
-  externalTrafficPolicy: Cluster
-  ports:
-    - name: http
-      nodePort: 32016
-      port: 80
-      protocol: TCP
-      targetPort: 4180
+  type: ClusterIP
   selector:
     app: oauth2-proxy
-  type: LoadBalancer
+  ports:
+    - name: http
+      port: 4180
+      protocol: TCP
+      targetPort: 4180
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: symdon-mailhog
+  labels:
+    app: mailhog
+spec:
+  type: ClusterIP
+  selector:
+    app: mailhog
+  ports:
+    - name: http
+      port: 8025
+      protocol: TCP
+      targetPort: 8025
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mailhog
+  labels:
+    app: mailhog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mailhog
+  template:
+    metadata:
+      labels:
+        app: mailhog
+    spec:
+      containers:
+      - name: mailhog
+        image: mailhog/mailhog
+        ports:
+        - containerPort: 1025
+        - containerPort: 8025
 
 ---
 apiVersion: apps/v1
@@ -34,12 +74,6 @@ spec:
         app: oauth2-proxy
     spec:
       containers:
-      - name: mailhog
-        image: mailhog/mailhog
-        ports:
-        - containerPort: 1025
-        - containerPort: 8025
-
       - name: oauth2-proxy
         image: quay.io/pusher/oauth2_proxy:v4.0.0
         args:
@@ -53,19 +87,12 @@ spec:
           value: "http://127.0.0.1:4180/oauth2/callback"
         - name: OAUTH2_PROXY_COOKIE_HTTPONLY
           value: "false"
-        - name: OAUTH2_PROXY_COOKIE_NAME
-          value: "oauth2_proxy_cp"
         - name: OAUTH2_PROXY_PASS_AUTHORIZATION_HEADER
-          value: "false"
-        - name: OAUTH2_PROXY_COOKIE_SECURE
           value: "false"
         - name: OAUTH2_PROXY_REDIRECT_URL
           value: "http://127.0.0.1/oauth2/callback"
-        - name: OAUTH2_PROXY_CLIENT_ID
-          value: "000000000000-0a0aa0a00a0a0a0a00aaaa0a0a0a0a0a.apps.googleusercontent.com"
-        - name: OAUTH2_PROXY_CLIENT_SECRET
-          value: "a0a000a000a00a0a00a0a0a0"
-        - name: OAUTH2_PROXY_COOKIE_SECRET
-          value: "DUMMY"
         - name: OAUTH2_PROXY_COOKIE_SECURE
           value: "false"
+        envFrom:
+        - secretRef:
+            name: symdon

@@ -1,6 +1,19 @@
 version: "3.7"
 
 services:
+  nginx:
+    image: nginx:1.17.5-alpine
+    expose:
+      - "80"
+    ports:
+      - "80:80"
+    volumes:
+      - "./nginx/conf.d:/etc/nginx/conf.d"
+      - "./nginx/nginx.conf:/etc/nginx/nginx.conf"
+    depends_on:
+      - mailhog
+      - oauth2_proxy
+
   oauth2_proxy:
     image: bitnami/oauth2-proxy:4.0.0-ol-7-r71
     entrypoint: oauth2_proxy

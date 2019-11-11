@@ -16,7 +16,7 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: solemn-badger-mailhog
+          serviceName: symdon-mailhog
           servicePort: 8025
 
 ---
@@ -30,5 +30,5 @@ spec:
       paths:
       - path: /oauth2
         backend:
-          serviceName: sad-sheep-oauth2-proxy
-          servicePort: 80
+          serviceName: symdon-oauth2-proxy
+          servicePort: 4180

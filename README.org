@@ -1,2 +1,50 @@
 #+TITLE: Symdon OAuth2 Proxy
 
+** Setup
+
+#+BEGIN_EXAMPLE
+$ cd secrets && for fname in `ls *.example`; do if [ ! -e $fname ]; then cp $fname `basename $fname .example`; fi done
+#+END_EXAMPLE
+
+** Docker Compose
+
+#+BEGIN_EXAMPLE
+$ docker-compose up
+#+END_EXAMPLE
+
+** Create ingress
+
+#+BEGIN_EXAMPLE
+$ helm upgrade ing --install stable/nginx-ingress
+$ kubectl apply -f ingress/main.yml
+#+END_EXAMPLE
+
+** Create secrets
+
+#+BEGIN_EXAMPLE
+$ kubectl apply -f secrets/k8s.yml
+#+END_EXAMPLE
+
+** Kubernetes-Helm
+
+Setup helm
+#+BEGIN_EXAMPLE
+$ helm init --history-max 200
+$ helm repo update
+#+END_EXAMPLE
+
+Deploy mailhog
+#+BEGIN_EXAMPLE
+$ helm upgrade symdon-mailhog --install stable/mailhog
+#+END_EXAMPLE
+
+Deploy oauth2-proxy
+#+BEGIN_EXAMPLE
+$ helm upgrade symdon --install -f helm/oauth2-proxy.config.yml -f secrets/helm.yml stable/oauth2-proxy
+#+END_EXAMPLE
+
+** Kubernetes Plain mainfest
+
+#+BEGIN_EXAMPLE
+$ docker-compose up
+#+END_EXAMPLE

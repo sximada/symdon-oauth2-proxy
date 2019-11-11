@@ -5,8 +5,12 @@
 -helm-install-tiller: helm init --history-max 200
 -helm-version: helm version
 -helm-repo-update: helm repo update
+-helm-apply-ingress: helm upgrade ing --install -f helm/ingress.config.yml stable/nginx-ingress
 -helm-apply-oauth2-proxy: helm upgrade sad-sheep --install -f helm/oauth2-proxy.config.yml stable/oauth2-proxy
 -helm-apply-mailhog: helm upgrade solemn-badger --install -f helm/mailhog.config.yml stable/mailhog
 
 # for k8s
 -k8s-apply: kubectl apply -f k8s/main.yml
+
+# for ingress
+-ingress-apply: kubectl apply -f ingress/main.yml

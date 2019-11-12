@@ -1,5 +1,35 @@
 #+TITLE: Symdon OAuth2 Proxy
 
+#+BEGIN_EXAMPLE
+            +------Docker Compose-----+
+	    |                         |
+Browser --- | --- Nginx --- Mailhog   |
+            |      |                  |
+            |      | <Authentication> |
+            |      |                  |
+            |   oauth2_proxy          |
+	    |      |                  |
+	    +-------------------------+
+                   |
+                 Google
+
+
+            +------Kubernetes--------------------------+
+	    |                                          |
+Browser --- | --- Nginx (Ingress) --- symdon-mailhog   |
+            |      |                  (Service)        |
+            |      | <Authentication> 	 |             |
+            |      |                  Mailhog          |
+            |   symdon-oauth2_proxy   (Pod)            |
+	    |      |  (Service)                        |
+            |   oauth2_proxy          	               |
+	    |      |  (Pod)                            |
+	    +------------------------------------------+
+                   |
+                 Google
+
+#+END_EXAMPLE
+
 ** Setup
 
 #+BEGIN_EXAMPLE

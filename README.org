@@ -46,5 +46,5 @@ $ helm upgrade symdon --install -f helm/oauth2-proxy.config.yml -f secrets/helm.
 ** Kubernetes Plain mainfest
 
 #+BEGIN_EXAMPLE
-$ docker-compose up
+$ kubectl apply -f k8s/main.yml
 #+END_EXAMPLE
